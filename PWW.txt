@@ -1,0 +1,128 @@
+Here's the following code:
+
+index.html:
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Image Processing Example</title>
+</head>
+
+<body>
+    <div style="position: relative;">
+        <canvas id="canvas"></canvas>
+        <p id="caption" style="position: absolute; top: 50px; left: 300px; font-weight: bold; font-size: 20px; color: white;"></p>
+    </div>
+    <script src="image_processing.js"></script>
+</body>
+
+</html>
+
+image_processing.js:
+
+const canvas = document.createElement('canvas');
+const ctx = canvas.getContext('2d');
+
+// Load the template image
+const template = new Image();
+template.src = 'template.png';
+template.onload = function () {
+  canvas.width = template.width;
+  canvas.height = template.height;
+
+  // Draw the template image on the canvas
+  ctx.drawImage(template, 0, 0);
+
+  // Load the picture image
+  const picture = new Image();
+  picture.src = 'picture.png';
+  picture.onload = function () {
+    // Draw the picture image inside the white square
+    ctx.drawImage(picture, 0, 0, picture.width, picture.height, 29, 83, 616, 596);
+
+    // Add a caption inside the gray rectangle
+    const grayRectangleX = 300;
+    const grayRectangleY = 868;
+    const grayRectangleWidth = 501;
+    const grayRectangleHeight = 60;
+    let caption = "This is a long caption that will get longer if it needs to fit. It will also get truncated if it is too long to fit within the gray rectangle."; // Change this to your desired caption
+
+    // Set the minimum and maximum font sizes
+    const minFontSize = 30;
+    const maxFontSize = 90;
+
+    // Set the initial font size to the maximum font size
+    let fontSize = maxFontSize;
+
+    // Set the font properties
+    ctx.font = `bold ${fontSize}px sans-serif`;
+    ctx.fillStyle = 'white';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    // Measure the caption's width
+    let captionWidth = ctx.measureText(caption).width;
+
+    // Reduce the font size until the caption fits inside the gray rectangle
+    while (captionWidth > grayRectangleWidth) {
+      fontSize--;
+      if (fontSize < minFontSize) {
+        break;
+      }
+      ctx.font = `bold ${fontSize}px sans-serif`;
+      captionWidth = ctx.measureText(caption).width;
+    }
+
+    // Split the caption into lines that fit inside the gray rectangle
+    let lines = [];
+    let line = "";
+    let words = caption.split(" ");
+    for (let i = 0; i < words.length; i++) {
+      let testLine = line + words[i] + " ";
+      let testWidth = ctx.measureText(testLine).width;
+      if (testWidth > grayRectangleWidth - 20) {
+        lines.push(line.trim());
+        line = words[i] + " ";
+      } else {
+        line = testLine;
+      }
+    }
+    lines.push(line.trim());
+
+    // Calculate the position to center the caption inside the gray rectangle
+    const captionX = grayRectangleX + grayRectangleWidth / 2;
+    const captionY = grayRectangleY + grayRectangleHeight / 2;
+
+    // Draw the caption
+    for (let i = 0; i < lines.length; i++) {
+      const lineHeight = fontSize * 1.2;
+      const y = captionY + i * lineHeight - ((lines.length - 1) * lineHeight) / 2;
+      ctx.fillText(lines[i], captionX, y);
+    }
+
+    // Save the result as a new image
+    const done = new Image();
+    done.src = canvas.toDataURL('image/jpeg');
+    done.onload = function () {
+      const link = document.createElement('a');
+      link.download = 'done.jpg';
+      link.href = done.src;
+      link.click();
+
+      // Show the result on the screen
+      const resultContainer = document.createElement('div');
+      const resultImg = document.createElement('img');
+      resultImg.src = done.src;
+      resultContainer.appendChild(resultImg);
+      document.body.appendChild(resultContainer);
+    };
+  };
+}
+
+
+Here's template.png: https://imgur.com/a/VzdstFW
+
+I want to add picture.png inside the white square on the left, and a caption to a different spot inside template.png. The white square is 615x593px.
+I also want picture.png to adjust its size. It must always fit inside the 615x593px white square on the left.

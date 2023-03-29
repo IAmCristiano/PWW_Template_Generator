@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Image Processing Example</title>
+</head>
+
+<body>
+    <div style="position: relative;">
+        <canvas id="canvas"></canvas>
+    </div>
+    <p>Write the caption, select an image file and click the confirm button to preview it.<br>Try not to make the caption too long. Usually, 3 lines max works fine.<br>If it's all good, download the image. You can use the button in the end of the page, if you want to.</p>
+    <div>
+        <input type="text" id="caption-input" placeholder="Enter caption here" style="height:100px;width:700px;font-size:17pt;">
+        <input type="file" id="image-input">
+        <button id="confirm-button">Confirm</button>
+    </div>
+    <div id="result-container"></div>
+    <script type="module" src="image_processing.js"></script>
+    <script type="module" src="caption_processing.js"></script>
+</body>
+
+</html>
