@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="style.css">
-    <title>Image Processing Example</title>
+    <title>PWW's Template Generator</title>
 </head>
 
 <body>
@@ -15,6 +15,8 @@
     <p>Write the caption, select an image file and click the confirm button to preview it.<br>Try not to make the caption too long. Usually, 3 lines max works fine.<br>If it's all good, download the image. You can use the button in the end of the page, if you want to.</p>
     <div>
         <input type="text" id="caption-input" placeholder="Enter caption here" style="height:100px;width:700px;font-size:17pt;">
+        <label for="font-size-input">Font Size:</label>
+        <input type="number" id="font-size-input" value="50" min="30" max="100"><br>
         <input type="file" id="image-input">
         <button id="confirm-button">Confirm</button>
     </div>

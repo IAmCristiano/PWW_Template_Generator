@@ -14,19 +14,27 @@ export function handleCaptionText(ctx, template, customImage) {
 
   // Write the caption inside the gray box
   ctx.fillStyle = 'white';
-  ctx.font = '50px sans-serif';
   ctx.textAlign = 'center';
 
   // Get user input for caption text
   const captionInput = document.getElementById('caption-input');
   const captionText = captionInput.value;
 
+  // Get user input for font size
+  const fontSizeInput = document.getElementById('font-size-input');
+  let fontSize = parseFloat(fontSizeInput.value);
+
+  if (isNaN(fontSize)) {
+    // Use default font size if input is not a valid number
+    fontSize = 32;
+  }
+
   // Check if the caption is not empty
   if (captionText.trim() !== '') {
 
     // Check if the caption exceeds the width of the gray box
     const captionWidth = ctx.measureText(captionText).width;
-    const boxWidth = 570 * 2;
+    const boxWidth = 550 * 2;
     const boxHeight = 72 * 2;
     let lines = [captionText];
     if (captionWidth > boxWidth) {
@@ -48,7 +56,6 @@ export function handleCaptionText(ctx, template, customImage) {
 
     // Write the lines of the caption
     let y = 825 + 40;
-    let fontSize = 50;
     while (fontSize > 30) {
       ctx.font = `${fontSize}px sans-serif`;
       let textHeight = 0;
